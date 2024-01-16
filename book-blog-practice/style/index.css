@@ -1,0 +1,33 @@
+.container{
+    max-width: 1200px;
+    margin: auto;
+}
+.login{
+    height: 50px;
+}
+.login img{
+    height: 100%;
+}
+.carousel, .carousel *{
+    max-height: 350px;
+}
+.carousel img{
+    object-fit: cover;
+
+}
+.posts .container{
+    padding: 50px 0;
+}
+.posts-cards{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 40px 0;
+    gap: 20px;
+}
+.posts-cards p { margin: 0; }
+
+.card-body{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
