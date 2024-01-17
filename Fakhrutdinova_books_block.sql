@@ -225,3 +225,33 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+ChatGPT (беседа № 412):
+
+INSERT INTO Author (Author_ID, Name, Surname, Patronomyc)
+VALUES (1, 'John', 'Doe', 'Smith'),
+       (2, 'Jane', 'Smith', 'Doe'),
+       (3, 'Michael', 'Johnson', 'Brown');
+
+INSERT INTO Book (Book_ID, Title, Author_ID, Publisher, Year_Published, Description)
+VALUES (1, 'Book 1', 1, 'Publisher 1', 2020, 'Description 1'),
+       (2, 'Book 2', 2, 'Publisher 2', 2019, 'Description 2'),
+       (3, 'Book 3', 3, 'Publisher 3', 2018, 'Description 3');
+
+INSERT INTO Post (Post_ID, Title, Text, Date, User_ID, Book_ID, photo)
+VALUES (1, 'Post 1', 'Text 1', '2021-01-01', 1, 1, '1984.jpg'),
+       (2, 'Post 2', 'Text 2', '2021-01-02', 2, 2, 'отделенные.jpg'),
+       (3, 'Post 3', 'Text 3', '2021-01-03', 3, 3, '1984.jpg');
+
+INSERT INTO role (Role_ID, name)
+VALUES (1, 'Admin'),
+       (2, 'User'),
+       (3, 'Guest');
+
+INSERT INTO User (User_ID, Name, Surname, phoneNumber, password, login, Role_ID)
+VALUES (1, 'John', 'Doe', '1234567890', 'password1', 'john123', 1),
+       (2, 'Jane', 'Smith', '0987654321', 'password2', 'jane456', 2),
+       (3, 'Michael', 'Johnson', '9876543210', 'password3', 'michael789', 3);
+
+1063 из 16384

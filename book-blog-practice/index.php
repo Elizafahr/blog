@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>books</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="style/index.css">
 </head>
 
@@ -14,9 +13,7 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container">
             <a class="navbar-brand" href="#">BooksBlog</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -54,13 +51,11 @@
                         <img src="media/images/slider-3.jpg" class="d-block w-100" alt="3">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide"
-                    data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide"
-                    data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
@@ -73,49 +68,51 @@
             <h2>Книжные новинки и интересные книги</h2>
             <div class="flex posts-cards">
                 <?php
-
                 // Заполняю список постов
                 $connection = new mysqli("localhost", "root", "", "Fakhrutdinova_books_block");
 
-                $query = "SELECT * FROM Post";
-                $result = mysqli_query($connection, $query); // Используйте mysqli_query или PDO::query в зависимости от выбранного метода подключения
+                $query = "SELECT Post.*, Book.Title AS BookTitle, Author.Name AS AuthorName FROM Post LEFT JOIN Book ON Post.Book_ID = Book.Book_ID LEFT JOIN Author ON Book.Author_ID = Author.Author_ID";
+                $result = mysqli_query($connection, $query);
+
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '
                     <div class="col-sm-3 mb-3 mb-sm-0">
-                    <div class="card">
-                    <div class="card-body">';
-                            // echo "<h4 class='card-title'" . $row['Title'] . "</h2>";
-                            echo "<h2>" . $row['Title'] . "</h2>";
-                            echo "<p class='card-text truncate'>" . $row['Text'] . "</p>";
-                            echo "<a href='posts/post.php?id=" . $row['Post_ID'] . "' class='btn btn-primary'>Go somewhere</a>";
-                            echo "<p>" . $row['Date'] . "</p>";
-                            echo '</div>
-                    </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="media/images/posts/' . $row['photo'] . '"></img>
+                                <h2>' . $row['Title'] . '</h2>
+                                <p class="card-text truncate">' . $row['Text'] . '</p>
+                                <form method="get" action="post.php">
+                                    <input type="text" name="Post_ID" value=' .$row['Post_ID']  .' class="hidden">
+                                </form>
+                                <a href="posts/post.php?id=' . $row['Post_ID'] . '" class="btn btn-primary">Go somewhere</a>                    <p>' . $row['Date'] . '</p>
+                                <p>' . $row['BookTitle'] . '</p>
+                                <p>' . $row['AuthorName'] . '</p>
+                            </div>
+                        </div>
                     </div>
                     ';
-                    }
-
+                }
                 ?>
+
             </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
     <!--Сокращение текста-->
     <script>
-    // Выбираем все элементы <p> внутри класса .card-text
-    var truncate = document.querySelectorAll(".card-text");
-    for (var i = 0; i < truncate.length; i++) {
-        $clamp(truncate[i], {
-            clamp: 5, // Число строк
-            useNativeClamp: false // НЕ используем -webkit-line-clamp
-        });
-    }
+        // Выбираем все элементы <p> внутри класса .card-text
+        var truncate = document.querySelectorAll(".card-text");
+        for (var i = 0; i < truncate.length; i++) {
+            $clamp(truncate[i], {
+                clamp: 5, // Число строк
+                useNativeClamp: false // НЕ используем -webkit-line-clamp
+            });
+        }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
     </script>
 
 </body>
