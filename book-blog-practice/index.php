@@ -10,29 +10,32 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav id="navbar" class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container">
-            <a class="navbar-brand" href="#">BooksBlog</a>
+            <a class="navbar-brand" href="index.php">
+                <img src="media/images/logo-black.svg" alt="">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Главная</a>
+                        <a class="nav-link active" aria-current="page" href="#navbar">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Посты</a>
+                        <a class="nav-link" href="#posts">Посты</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">О нас</a>
+                        <a class="nav-link" href="#contact">Связаться</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="login">
-                    <button class="btn login">
+                <form class="d-flex" action="login.php">
+                    <button class="btn login" type="">
                         <img src="media/images/user.png" alt="">
                     </button>
                 </form>
+
             </div>
         </div>
     </nav>
@@ -63,10 +66,10 @@
         </div>
     </div>
 
-    <div class="posts">
-        <div class="container">
+    <div class="posts" id="posts">
+    <div class="container">
             <h2>Книжные новинки и интересные книги</h2>
-            <div class="flex posts-cards">
+            <div class=" posts-cards">
                 <?php
                 // Заполняю список постов
                 $connection = new mysqli("localhost", "root", "", "Fakhrutdinova_books_block");
@@ -76,18 +79,26 @@
 
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '
-                    <div class="col-sm-3 mb-3 mb-sm-0">
+                    <div class="col-sm-5  mb-3 mb-sm-0 col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <img src="media/images/posts/' . $row['photo'] . '"></img>
-                                <h2>' . $row['Title'] . '</h2>
+                               <div class="card-img">  <img src="media/images/posts/' . $row['photo'] . '"></img></div>
+                                <h4>' . $row['Title'] . '</h4>
                                 <p class="card-text truncate">' . $row['Text'] . '</p>
+                                
+                                <div class="d-block"> 
+                                    <div class="d-flex justify-content-between">
+                                        <p class="ligth">' . $row['BookTitle'] . '</p>
+                                        <p class="ligth"> ' . $row['AuthorName'] . '</p>
+
+                                       <!--<p class="ligth">' . $row['Date'] . '</p>-->
+                                    </div>
+                                </div>
+                                <a href="post.php?id=' . $row['Post_ID'] . '" class="btn btn-primary">Go somewhere</a>                    
+
                                 <form method="get" action="post.php">
-                                    <input type="text" name="Post_ID" value=' .$row['Post_ID']  .' class="hidden">
+                                    <input type="text" name="Post_ID" value=' . $row['Post_ID']  . ' class="hidden">
                                 </form>
-                                <a href="posts/post.php?id=' . $row['Post_ID'] . '" class="btn btn-primary">Go somewhere</a>                    <p>' . $row['Date'] . '</p>
-                                <p>' . $row['BookTitle'] . '</p>
-                                <p>' . $row['AuthorName'] . '</p>
                             </div>
                         </div>
                     </div>
@@ -98,6 +109,71 @@
             </div>
         </div>
     </div>
+
+    <div class="articles">
+    <div class="container">
+        <h2>Статьи</h2>
+        <?php
+        // Заполняю список постов
+        $connection = new mysqli("localhost", "root", "", "Fakhrutdinova_books_block");
+
+        $query = "SELECT * FROM Article";
+        $result = mysqli_query($connection, $query);
+        echo '<div class=" article-cards">';
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '
+            <div class=" article-card   mt-3 m-1 ' . $row['bg']  .'">
+                    <div class="article-card-body d-flex flex-column  ">
+                        <h4>' . $row['Title'] . '</h4>
+                        <a href="article.php?id=' . $row['Article_ID'] . '" class="btn btn-primary">Читать</a>                    
+                        ';
+
+            // Проверка наличия фотографии
+            if ($row['img'] !== null) {
+                echo '<img src="media/images/articles/'.  $row['img'] .  '"></img>';
+            }
+
+            echo '
+                        <form method="get" action="article.php">
+                            <input type="text" name="Article_ID"class="hidden value=' . $row['Article_ID ']  . ' ">
+                        </form>
+                    </div>
+            </div>
+            ';
+        }
+        echo '</div>';
+
+        ?>
+    </div>
+</div>
+<div class="social-media container" id="contact">
+            <a href="#" class="telegram social-media__btn">
+                Мы в TG
+                <img src="media/images/social-media/Telegram.svg" alt="Instagram">
+            </a>
+            <a href="#" class="instagram social-media__btn">
+            Мы в Inst
+            <img src="media/images/social-media/Instagram.svg" alt="Instagram">
+            </a>
+            <a href="#" class="instagram social-media__btn">
+            Мы в Vk
+                <img src="media/images/social-media/Instagram.svg" alt="Instagram">
+            </a>
+        </div>
+
+        <div class="container">
+  <footer class="py-3 my-4">
+   
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
+      <li class="nav-item">  <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
+      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
+      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
+     </ul>
+    <p class="text-center text-muted">&copy; 2024 by me</p>
+  </footer>
+</div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
     <!--Сокращение текста-->
     <script>
