@@ -39,40 +39,34 @@
     </nav>
 
     <div class="container fullPost">
-    <?php
-    session_start();
+        <?php
+        session_start();
 
-    // Получаем значение параметра id из URL
-    $id = $_GET['id'];
+        // Получаем значение параметра id из URL
+        $id = $_GET['id'];
 
-    // Подключаемся к базе данных
-    $connection = new mysqli("localhost", "root", "", "new");
+        // Подключаемся к базе данных
+        $connection = new mysqli("localhost", "root", "", "new");
 
-    // Создаем запрос для выборки данных поста с заданным id
-    $query = "SELECT Article.*,  User.Name AS UserName, User.Surname AS UserSurname FROM Article LEFT JOIN User ON Article.User_ID = User.User_ID WHERE Article.Article_ID = $id";
-    $result = mysqli_query($connection, $query);
+        // Создаем запрос для выборки данных поста с заданным id
+        $query = "SELECT Article.*,  User.Name AS UserName, User.Surname AS UserSurname FROM Article LEFT JOIN User ON Article.User_ID = User.User_ID WHERE Article.Article_ID = $id";
+        $result = mysqli_query($connection, $query);
 
-    // Проверяем, есть ли запись с таким id
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
+        // Проверяем, есть ли запись с таким id
+        if (mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
 
-        // Выводим данные поста
-        echo '
+            // Выводим данные поста
+            echo '
         <div class="">
             <div>
                 <div class="d-lg-flex gap-5">
                     ';
 
-        // Проверка наличия фотографии
-        if ($row['photo'] !== null) {
-            echo '
-            <div class="post-image">
-                <img src="media/images/posts/' . $row['photo'] . '"></img>
-            </div>
-            ';
-        }
+            // Проверка наличия фотографии
+            
 
-        echo '
+            echo '
                     <div class="post-content d-flex flex-column gap-3">
 
                         
@@ -111,38 +105,38 @@
             </div>
         </div>
         ';
-    } else {
-        echo "Пост не найден";
-    }
-    ?>
-</div>
-<div class="social-media container" id="contact">
-            <a href="#" class="telegram social-media__btn">
-                Мы в TG
-                <img src="media/images/social-media/Telegram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+        } else {
+            echo "Пост не найден";
+        }
+        ?>
+    </div>
+    <div class="social-media container" id="contact">
+        <a href="#" class="telegram social-media__btn">
+            Мы в TG
+            <img src="media/images/social-media/Telegram.svg" alt="Instagram">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Inst
             <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Vk
-                <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-        </div>
+            <img src="media/images/social-media/Instagram.svg" alt="Instagram">
+        </a>
+    </div>
 
-        <div class="container">
-  <footer class="py-3 my-4">
-   
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
-      <li class="nav-item">  <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
-     </ul>
-    <p class="text-center text-muted">&copy; 2024 by me</p>
-  </footer>
-</div>
+    <div class="container">
+        <footer class="py-3 my-4">
+
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
+                <li class="nav-item"> <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
+            </ul>
+            <p class="text-center text-muted">&copy; 2024 by me</p>
+        </footer>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
     <!--Сокращение текста-->
     <script>

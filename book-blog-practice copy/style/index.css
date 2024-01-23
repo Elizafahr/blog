@@ -20,6 +20,7 @@
   .btn{
     background-color: var(--blue);
     border-color: var(--blue);
+    max-height: 40px;
   }
   .btn:hover{
     background-color: var(--ligth-blue);
@@ -32,7 +33,8 @@
 
 
 
-
+.btn{
+ }
 .login {
     height: 50px;
 }

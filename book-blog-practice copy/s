@@ -1,0 +1,135 @@
+use new;
+CREATE TABLE `role` (
+  `Role_ID` int(11) NOT NULL,
+  `name` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `Author` (
+  `Author_ID` int(11) NOT NULL,
+  `Name` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Surname` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Patronomyc` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `Book` (
+  `Book_ID` int(11) NOT NULL,
+  `Title` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Author_ID` int(11) NOT NULL,
+  `Publisher` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Year_Published` year(4) NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL);
+
+CREATE TABLE `Post` (
+  `Post_ID` int(11) NOT NULL,
+  `Title` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Text` varchar(15555) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Date` date NOT NULL,
+  `User_ID` int(11) NOT NULL,
+  `Book_ID` int(11) NOT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `User` (
+  `User_ID` int(11) NOT NULL,
+  `Name` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Surname` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phoneNumber` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `login` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Role_ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `Article` (
+  `Article_ID` int(11) NOT NULL,
+  `Title` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Text` varchar(15555) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Date` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `img` varchar(155) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `User_ID` int(11) NOT NULL,
+  `bg` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `Comment` (
+  `Comment_ID` int(11) NOT NULL,
+  `User_ID` int(11) NOT NULL,
+  `Post_ID` int(11) NOT NULL,
+  `Text` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Comment_Date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+use new;
+ ALTER TABLE `Article`
+  MODIFY `Article_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT для таблицы `Author`
+--
+ALTER TABLE `Author`
+  MODIFY `Author_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `Book`
+--
+ALTER TABLE `Book`
+  MODIFY `Book_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `Comment`
+--
+ALTER TABLE `Comment`
+  MODIFY `Comment_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT для таблицы `role`
+--
+ALTER TABLE `role`
+  MODIFY `Role_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `User`
+--
+ALTER TABLE `User`
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `Article`
+  ADD PRIMARY KEY (`Article_ID`),
+  ADD KEY `User_ID` (`User_ID`);
+
+--
+-- Индексы таблицы `Author`
+--
+ALTER TABLE `Author`
+  ADD PRIMARY KEY (`Author_ID`);
+
+--
+-- Индексы таблицы `Book`
+--
+ALTER TABLE `Book`
+  ADD PRIMARY KEY (`Book_ID`),
+  ADD KEY `Author_ID` (`Author_ID`);
+
+--
+-- Индексы таблицы `Comment`
+--
+ALTER TABLE `Comment`
+  ADD PRIMARY KEY (`Comment_ID`),
+  ADD KEY `User_ID` (`User_ID`),
+  ADD KEY `Post_ID` (`Post_ID`);
+
+--
+-- Индексы таблицы `Post`
+--
+ALTER TABLE `Post`
+  ADD PRIMARY KEY (`Post_ID`),
+  ADD KEY `User_ID` (`User_ID`),
+  ADD KEY `Book_ID` (`Book_ID`);
+
+--
+-- Индексы таблицы `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`Role_ID`);
+
+--
+-- Индексы таблицы `User`
+--
+ALTER TABLE `User`
+  ADD PRIMARY KEY (`User_ID`),
+  ADD KEY `user_ibfk_1` (`Role_ID`);

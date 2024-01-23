@@ -107,8 +107,6 @@
 
     <div class="container">
         <?php
-
-
         // Создаем запрос для выборки комментариев поста с заданным id
         $queryComments = "SELECT Comment.*, User.Name, User.Surname FROM Comment JOIN User ON Comment.User_ID = User.User_ID WHERE Comment.Post_ID = $id";
         $resultComments = mysqli_query($connection, $queryComments);
@@ -118,28 +116,26 @@
             echo '<div class="list-group">
         <h3>Комментарии</h3>';
 
-        while ($rowComment = mysqli_fetch_assoc($resultComments)) {
-            echo '
+            while ($rowComment = mysqli_fetch_assoc($resultComments)) {
+                echo '
             <div class="list-group-item align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">' . $rowComment['Name'] . " "  . $rowComment['Surname']  . '</h5>'
                     . '<small>' . $rowComment['Comment_Date'] . '</small>'
                     . '</div>'
-                   .'<div class="d-flex w-100 justify-content-between">'
-                   . '<p class=" ">'
-                   . $rowComment['Text']
-                   . '</p>';
-                     // Проверяем, является ли текущий авторизованный пользователь автором комментария
-            if ($rowComment['User_ID'] == $_SESSION['User_ID']) {
-                // Выводим кнопку "Удалить" с передачей id комментария в URL
-                echo '<a href="delete_comment.php?id=' . $rowComment['Comment_ID'] . '" class="btn btn-danger">Удалить</a>';
+                    . '<div class="d-flex w-100 justify-content-between">'
+                    . '<p class=" ">'
+                    . $rowComment['Text']
+                    . '</p>';
+                // Проверяем, является ли текущий авторизованный пользователь автором комментария
+                if (!empty($_SESSION['auth'])) {
+                    // Выводим кнопку "Удалить" с передачей id комментария в URL
+                    echo '<a href="delete_comment.php?id=' . $rowComment['Comment_ID'] . '" class="btn btn-danger">Удалить</a>';
+                }
+
+                echo '</div>';
+                echo '</div>';
             }
-            
-            echo '</div>';
-        
-          
-            echo '</div>';
-        }
 
             echo '</div>';
 
@@ -157,26 +153,28 @@
                         
                     </form>';
                 session_start();
-                // подключение к базе данных
-                $connection = mysqli_connect("localhost", "root", "", "new");
+                if (isset($_POST['id']) && !empty($_POST['id']) && isset($_POST['comment']) && !empty($_POST['comment']) && isset($_SESSION['User_ID']) && !empty($_SESSION['User_ID'])) {
 
-                // проверка подключения
-                if (mysqli_connect_errno()) {
-                    die("Ошибка подключения к базе данных: " . mysqli_connect_error());
-                }
+                    // подключение к базе данных
+                    $connection = mysqli_connect("localhost", "root", "", "new");
 
-                // получение id поста из формы
-                $id = $_POST['id'];
-                $username = $_SESSION['username'];
-                // получение текста комментария из формы
-                $comment = $_POST['comment'];
+                    // проверка подключения
+                    if (mysqli_connect_errno()) {
+                        die("Ошибка подключения к базе данных: " . mysqli_connect_error());
+                    }
 
-                // получение id пользователя из сессии
-                $user_id = $_SESSION['User_ID'];
+                    // получение id поста из формы
+                    $id = $_POST['id'];
+                    $username = $_SESSION['username'];
+                    // получение текста комментария из формы
+                    $comment = $_POST['comment'];
 
-                // создание текущей даты и времени
-                $comment_date = date('Y-m-d H:i:s');
+                    // получение id пользователя из сессии
+                    $user_id = $_SESSION['User_ID'];
 
+                    // создание текущей даты и времени
+                    $comment_date = date('Y-m-d H:i:s');
+               
                 // создание запроса на добавление комментария
                 $query = "INSERT INTO Comment (Text, User_ID, Post_ID, Comment_Date) VALUES ('$comment', '$user_id', '$id', '$comment_date')";
                 // выполнение запроса
@@ -193,6 +191,7 @@
 
                 // закрытие подключения к базе данных
                 mysqli_close($connection);
+            }
             } else {
                 echo '<p>Для того чтобы оставить комментарий, пожалуйста, авторизуйтесь.</p>';
             }
@@ -205,32 +204,32 @@
         ?>
     </div>
     <div class="social-media container" id="contact">
-            <a href="#" class="telegram social-media__btn">
-                Мы в TG
-                <img src="media/images/social-media/Telegram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+        <a href="#" class="telegram social-media__btn">
+            Мы в TG
+            <img src="media/images/social-media/Telegram.svg" alt="Instagram">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Inst
             <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Vk
-                <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-        </div>
+            <img src="media/images/social-media/Instagram.svg" alt="Instagram">
+        </a>
+    </div>
 
-        <div class="container">
-  <footer class="py-3 my-4">
-   
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
-      <li class="nav-item">  <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
-     </ul>
-    <p class="text-center text-muted">&copy; 2024 by me</p>
-  </footer>
-</div>
+    <div class="container">
+        <footer class="py-3 my-4">
+
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
+                <li class="nav-item"> <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
+            </ul>
+            <p class="text-center text-muted">&copy; 2024 by me</p>
+        </footer>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
     <!--Сокращение текста-->
     <script>

@@ -88,7 +88,7 @@
                     $_SESSION["User_ID"] = $user_row['User_ID'];
                     $_SESSION['auth'] = true;
                     $_SESSION['username'] = $username;
- 
+                    $_SESSION['Role_ID'] = $user_row['Role_ID'];
                     header("Location: index.php"); // Перенаправление на главную страницу или другую страницу с авторизированным доступом
                     exit();
                 } else { // Некорректные данные авторизации

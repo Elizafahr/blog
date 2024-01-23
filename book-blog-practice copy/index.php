@@ -67,10 +67,12 @@
     </div>
 
     <div class="posts" id="posts">
-    <div class="container">
+        <div class="container">
             <h2>Книжные новинки и интересные книги</h2>
             <div class=" posts-cards">
                 <?php
+                session_start();
+
                 // Заполняю список постов
                 $connection = new mysqli("localhost", "root", "", "new");
 
@@ -94,9 +96,17 @@
                                        <!--<p class="ligth">' . $row['Date'] . '</p>-->
                                     </div>
                                 </div>
-                                <a href="post.php?id=' . $row['Post_ID'] . '" class="btn btn-primary">Go somewhere</a>                    
-
-                                <form method="get" action="post.php">
+                                <a href="post.php?id=' . $row['Post_ID'] . '" class="btn btn-primary">Go somewhere</a>   ';
+                    if ($_SESSION['Role_ID'] == 1) {
+                        echo '
+                                    <form method="post" action="delete_article.php">
+                                        <input type="hidden" name="postId" value="' . $row['Post_ID'] . '">
+                                        <button type="submit" class="btn btn-primary btn-delete-article">Удалить</button>
+                                    </form> '
+                                    ;
+                    }
+                    echo '
+                                 <form method="get" action="post.php">
                                     <input type="text" name="Post_ID" value=' . $row['Post_ID']  . ' class="hidden">
                                 </form>
                             </div>
@@ -111,68 +121,74 @@
     </div>
 
     <div class="articles">
-    <div class="container">
-        <h2>Статьи</h2>
-        <?php
-        // Заполняю список постов
-        $connection = new mysqli("localhost", "root", "", "new");
+        <div class="container">
+            <h2>Статьи</h2>
+            <?php
+            // Заполняю список постов
+            $connection = new mysqli("localhost", "root", "", "new");
 
-        $query = "SELECT * FROM Article";
-        $result = mysqli_query($connection, $query);
-        echo '<div class=" article-cards">';
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '
-            <div class=" article-card   mt-3 m-1 ' . $row['bg']  .'">
+            $query = "SELECT * FROM Article";
+            $result = mysqli_query($connection, $query);
+            echo '<div class=" article-cards">';
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '
+            <div class=" article-card   mt-3 m-1 ' . $row['bg']  . '">
                     <div class="article-card-body d-flex flex-column  ">
                         <h4>' . $row['Title'] . '</h4>
                         <a href="article.php?id=' . $row['Article_ID'] . '" class="btn btn-primary">Читать</a>                    
                         ';
+                        if ($_SESSION['Role_ID'] == 1) {
+                            echo '
+                                        <form method="post" action="delete_article.php">
+                                            <input type="hidden" name="Article_ID" value="' . $row['Article_ID'] . '">
+                                            <button type="submit" class="btn btn-primary btn-delete-article">Удалить</button>
+                                        </form> '
+                                        ;
+                        }
+                // Проверка наличия фотографии
+                if ($row['img'] !== null) {
+                    echo '<img src="media/images/articles/' .  $row['img'] .  '"></img>';
+                }
 
-            // Проверка наличия фотографии
-            if ($row['img'] !== null) {
-                echo '<img src="media/images/articles/'.  $row['img'] .  '"></img>';
-            }
-
-            echo '
+                echo '
                         <form method="get" action="article.php">
-                            <input type="text" name="Article_ID"class="hidden value=' . $row['Article_ID ']  . ' ">
                         </form>
                     </div>
             </div>
             ';
-        }
-        echo '</div>';
+            }
+            echo '</div>';
 
-        ?>
+            ?>
+        </div>
     </div>
-</div>
-<div class="social-media container" id="contact">
-            <a href="#" class="telegram social-media__btn">
-                Мы в TG
-                <img src="media/images/social-media/Telegram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+    <div class="social-media container" id="contact">
+        <a href="#" class="telegram social-media__btn">
+            Мы в TG
+            <img src="media/images/social-media/Telegram.svg" alt="Instagram">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Inst
             <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Vk
-                <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-        </div>
+            <img src="media/images/social-media/Instagram.svg" alt="Instagram">
+        </a>
+    </div>
 
-        <div class="container">
-  <footer class="py-3 my-4">
-   
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
-      <li class="nav-item">  <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
-     </ul>
-    <p class="text-center text-muted">&copy; 2024 by me</p>
-  </footer>
-</div>
+    <div class="container">
+        <footer class="py-3 my-4">
+
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
+                <li class="nav-item"> <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
+            </ul>
+            <p class="text-center text-muted">&copy; 2024 by me</p>
+        </footer>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
     <!--Сокращение текста-->
@@ -186,6 +202,7 @@
             });
         }
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
