@@ -12,7 +12,9 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container">
-            <a class="navbar-brand" href="index.php">BooksBlog</a>
+            <a class="navbar-brand" href="index.php">
+                <img src="media/images/logo-black.svg" alt="">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -50,7 +52,7 @@
 
                     <input class="form-control" type="text" name="username" placeholder="Имя пользователя">
                     <input class="form-control" type="password" name="password" placeholder="Пароль">
-                     <button type="submit" name="register" class="btn btn-primary">Зарегистрироваться</button>
+                    <button type="submit" name="register" class="btn btn-primary">Зарегистрироваться</button>
                 </form>
             </div>
         </div>
@@ -75,11 +77,6 @@
                 // Запрос на проверку данных в базе данных
                 $query = "SELECT * FROM User WHERE login='$username' AND password='$password'";
 
-                // if ($user_result->num_rows == 1) {
-                //     $user_row = $user_result->fetch_assoc();
-                //     $_SESSION["User_ID"] = $user_row['id'];
-                // }
-
                 $result = $connection->query($query);
 
                 // Проверка результата запроса
@@ -89,8 +86,13 @@
                     $_SESSION['auth'] = true;
                     $_SESSION['username'] = $username;
                     $_SESSION['Role_ID'] = $user_row['Role_ID'];
-                    header("Location: index.php"); // Перенаправление на главную страницу или другую страницу с авторизированным доступом
-                    exit();
+                    if($user_row['Role_ID']==1){
+                        header("Location: admin.php"); // Перенаправление на главную страницу или другую страницу с авторизированным доступом
+                        exit();
+                    }else if($user_row['Role_ID']==1){
+                        header("Location: index.php"); // Перенаправление на главную страницу или другую страницу с авторизированным доступом
+                        exit();
+                    }
                 } else { // Некорректные данные авторизации
                     echo "Некорректные данные авторизации";
                 }
@@ -102,7 +104,7 @@
                 $phoneNumber = $_POST['phoneNumber'];
                 $username = $_POST['username'];
                 $password = $_POST['password'];
-                $role = 1 ; // Добавлено получение выбранной роли
+                $role = 1; // Добавлено получение выбранной роли
 
                 // Проверка наличия пользователя с таким же именем в базе данных
                 $check_query = "SELECT * FROM User WHERE login='$username'";
@@ -112,14 +114,13 @@
                     echo "Пользователь с таким именем уже зарегистрирован";
                 } else {
                     // Регистрация пользователя
-                    $register_query = "INSERT INTO User (name, surname, phoneNumber, login, password, role_id) VALUES ('$name', '$surname', '$phoneNumber', '$username', '$password', $role)";                    if ($connection->query($register_query) === true) {
+                    $register_query = "INSERT INTO User (name, surname, phoneNumber, login, password, role_id) VALUES ('$name', '$surname', '$phoneNumber', '$username', '$password', $role)";
+                    if ($connection->query($register_query) === true) {
                         echo "Регистрация успешна";
                         $_SESSION['auth'] = true;
                         echo $_SESSION['auth'] == true;
                         $_SESSION["authtry"] = "authtry";
                         $_SESSION["username"] = $username;
-
-
                     } else {
                         echo "Ошибка регистрации: " . $connection->error;
                     }
@@ -136,32 +137,32 @@
     </div>
 
     <div class="social-media container" id="contact">
-            <a href="#" class="telegram social-media__btn">
-                Мы в TG
-                <img src="media/images/social-media/Telegram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+        <a href="#" class="telegram social-media__btn">
+            Мы в TG
+            <img src="media/images/social-media/Telegram.svg" alt="Instagram">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Inst
             <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-            <a href="#" class="instagram social-media__btn">
+        </a>
+        <a href="#" class="instagram social-media__btn">
             Мы в Vk
-                <img src="media/images/social-media/Instagram.svg" alt="Instagram">
-            </a>
-        </div>
+            <img src="media/images/social-media/Instagram.svg" alt="Instagram">
+        </a>
+    </div>
 
-        <div class="container">
-  <footer class="py-3 my-4">
-   
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
-      <li class="nav-item">  <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
-      <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
-     </ul>
-    <p class="text-center text-muted">&copy; 2024 by me</p>
-  </footer>
-</div>
+    <div class="container">
+        <footer class="py-3 my-4">
+
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a class="nav-link px-2 text-muted" aria-current="page" href="#">Главная</a></li>
+                <li class="nav-item"> <a class="nav-link px-2 text-muted" href="#">Посты</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Связатьс</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" href="#">Статьи</a></li>
+            </ul>
+            <p class="text-center text-muted">&copy; 2024 by me</p>
+        </footer>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
     <!--Сокращение текста-->

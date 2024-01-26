@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<nav id="navbar" class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav id="navbar" class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container">
             <a class="navbar-brand" href="index.php">
                 <img src="media/images/logo-black.svg" alt="">
@@ -27,7 +27,7 @@
                         <a class="nav-link" href="index.php">Посты</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"  href="index.php">Связаться</a>
+                        <a class="nav-link" href="index.php">Связаться</a>
                     </li>
                 </ul>
                 <form class="d-flex" action="login.php">
@@ -59,10 +59,20 @@
         // Проверяем, есть ли запись с таким id
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
+            if (!empty($_SESSION['auth'])) {
+                if ($_SESSION['Role_ID'] == 1) {
+                    echo '
+                            <form method="post" action="delete_article.php">
+                                <input type="hidden" name="postId" value="' . $row['Post_ID'] . '">
+                                <button type="submit" class="btn btn-primary btn-delete-article">Удалить пост</button>
+                            </form> ';
+                }
+            }
 
             // Выводим данные поста
             echo '
-                <div class="">
+            
+                <div class="" style="margin-top: 30px;">
                     <div>
                         <div class="d-lg-flex gap-5">
                            <div class="post-image">
@@ -109,18 +119,18 @@
 
     <div class="container">
         <?php
+
+
+
         // Создаем запрос для выборки комментариев поста с заданным id
-     //   $queryComments = "SELECT Comment.*, User.Name, User.Surname FROM Comment JOIN User ON Comment.User_ID = User.User_ID WHERE Comment.Post_ID = $id";
-     $queryComments = "SELECT Comment.*, User.Name, User.Surname 
-                  FROM Comment 
-                  JOIN User ON Comment.User_ID = User.User_ID 
-                  WHERE Comment.Post_ID = $id 
-                  AND Comment.status = 'approved'";  
-     $resultComments = mysqli_query($connection, $queryComments);
+        //   $queryComments = "SELECT Comment.*, User.Name, User.Surname FROM Comment JOIN User ON Comment.User_ID = User.User_ID WHERE Comment.Post_ID = $id";
+        $queryComments = "SELECT Comment.*, User.Name, User.Surname FROM Comment JOIN User ON Comment.User_ID = User.User_ID WHERE Comment.Post_ID = $id";
+
+        $resultComments = mysqli_query($connection, $queryComments);
 
         // Проверяем, есть ли комментарии
         if (mysqli_num_rows($resultComments) > 0) {
-            echo '<div class="list-group">
+            echo '<div class="list-group" style="margin-top: 30px;">
         <h3>Комментарии</h3>';
 
             while ($rowComment = mysqli_fetch_assoc($resultComments)) {
@@ -133,12 +143,18 @@
                     . '<div class="d-flex w-100 justify-content-between">'
                     . '<p class=" ">'
                     . $rowComment['Text']
-                    . '</p>';
-                // Проверяем, является ли текущий авторизованный пользователь автором комментария
-                if (!empty($_SESSION['auth'])) {
-                    // Выводим кнопку "Удалить" с передачей id комментария в URL
-                    echo '<a href="delete_comment.php?id=' . $rowComment['Comment_ID'] . '" class="btn btn-danger">Удалить</a>';
+                    . '</p>'
+
+                    . '<div class="d-flex gap-2" > <div  class="btn btn-primary"> ' . $rowComment['status'] . ' </div>
+                   <a href="delete_comment.php?id=' . $rowComment['Comment_ID'] . '" class="btn btn-danger">Удалить</a>
+                   <form method="POST" action="process_comment.php">
+                   <input type="hidden" name="comment_id" value="' . $rowComment['Comment_ID'] . '">';
+                if ($rowComment['status'] == "processing") {
+                    echo '<a href="process_comment.php?id=' . $rowComment['Comment_ID'] . ' name="approve" class="btn btn-success ms-2">Подтвердить</a>';
                 }
+                echo '</form> </div>';
+                 
+
 
                 echo '</div>';
                 echo '</div>';
@@ -181,24 +197,24 @@
 
                     // создание текущей даты и времени
                     $comment_date = date('Y-m-d H:i:s');
-               
-                // создание запроса на добавление комментария
-                $query = "INSERT INTO Comment (Text, User_ID, Post_ID, Comment_Date) VALUES ('$comment', '$user_id', '$id', '$comment_date')";
-                // выполнение запроса
-                $result = mysqli_query($connection, $query);
 
-                // проверка выполнения запроса
-                if ($result) {
-                    // успешное добавление комментария
-                    echo "Комментарий успешно добавлен.";
-                } else {
-                    // ошибка при добавлении комментария
-                    echo "Ошибка при добавлении комментария: " . mysqli_error($connection);
+                    // создание запроса на добавление комментария
+                    $query = "INSERT INTO Comment (Text, User_ID, Post_ID, Comment_Date) VALUES ('$comment', '$user_id', '$id', '$comment_date')";
+                    // выполнение запроса
+                    $result = mysqli_query($connection, $query);
+
+                    // проверка выполнения запроса
+                    if ($result) {
+                        // успешное добавление комментария
+                        echo "Комментарий успешно добавлен.";
+                    } else {
+                        // ошибка при добавлении комментария
+                        echo "Ошибка при добавлении комментария: " . mysqli_error($connection);
+                    }
+
+                    // закрытие подключения к базе данных
+                    mysqli_close($connection);
                 }
-
-                // закрытие подключения к базе данных
-                mysqli_close($connection);
-            }
             } else {
                 echo '<p>Для того чтобы оставить комментарий, пожалуйста, авторизуйтесь.</p>';
             }

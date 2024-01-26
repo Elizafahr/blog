@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>books</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="style/index.css">
 </head>
 
@@ -15,7 +16,9 @@
             <a class="navbar-brand" href="index.php">
                 <img src="media/images/logo-black.svg" alt="">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -62,11 +65,13 @@
                         <img src="media/images/slider-3.jpg" class="d-block w-100" alt="3">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide"
+                    data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide"
+                    data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
@@ -79,7 +84,8 @@
             <h2>Книжные новинки и интересные книги</h2>
             <div class=" posts-cards">
                 <?php
- 
+                session_start();
+
                 // Заполняю список постов
                 $connection = new mysqli("localhost", "root", "", "new");
 
@@ -103,8 +109,16 @@
                                        <!--<p class="ligth">' . $row['Date'] . '</p>-->
                                     </div>
                                 </div>
-                                <a href="post.php?id=' . $row['Post_ID'] . '" class="btn btn-primary">Читать</a>   ';
-
+                                <a href="postAdmin.php?id=' . $row['Post_ID'] . '" class="btn btn-primary">Читать</a>   ';
+                    // if (!empty($_SESSION['auth'])) {
+                    //     if ($_SESSION['Role_ID'] == 1) {
+                    //         echo '
+                    //                 <form method="post" action="delete_article.php">
+                    //                     <input type="hidden" name="postId" value="' . $row['Post_ID'] . '">
+                    //                     <button type="submit" class="btn btn-primary btn-delete-article">Удалить</button>
+                    //                 </form> ';
+                    //     }
+                    // }
                     echo '
                                  <form method="get" action="post.php">
                                     <input type="text" name="Post_ID" value=' . $row['Post_ID']  . ' class="hidden">
@@ -137,7 +151,15 @@
                         <h4>' . $row['Title'] . '</h4>
                         <a href="article.php?id=' . $row['Article_ID'] . '" class="btn btn-primary">Читать</a>                    
                         ';
-
+                // if (!empty($_SESSION['auth'])) {
+                //     if ($_SESSION['Role_ID'] == 1) {
+                //         echo '
+                //                             <form method="post" action="delete_article.php">
+                //                                 <input type="hidden" name="Article_ID" value="' . $row['Article_ID'] . '">
+                //                                 <button type="submit" class="btn btn-primary btn-delete-article">Удалить</button>
+                //                             </form> ';
+                //     }
+                // }
                 // Проверка наличия фотографии
                 if ($row['img'] !== null) {
                     echo '<img src="media/images/articles/' .  $row['img'] .  '"></img>';
@@ -186,19 +208,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
     <!--Сокращение текста-->
     <script>
-        // Выбираем все элементы <p> внутри класса .card-text
-        var truncate = document.querySelectorAll(".card-text");
-        for (var i = 0; i < truncate.length; i++) {
-            $clamp(truncate[i], {
-                clamp: 5, // Число строк
-                useNativeClamp: false // НЕ используем -webkit-line-clamp
-            });
-        }
+    // Выбираем все элементы <p> внутри класса .card-text
+    var truncate = document.querySelectorAll(".card-text");
+    for (var i = 0; i < truncate.length; i++) {
+        $clamp(truncate[i], {
+            clamp: 5, // Число строк
+            useNativeClamp: false // НЕ используем -webkit-line-clamp
+        });
+    }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
     </script>
 
 </body>

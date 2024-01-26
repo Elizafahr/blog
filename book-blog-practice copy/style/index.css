@@ -186,7 +186,7 @@
   .article-card-body  .btn{
     background-color: transparent;
     border-color: var(--white);
-  }
+   }
   .article-card-body  .btn:hover{
     background-color: rgba(255, 255, 255, 0.084);
     border-color: var(--white);
