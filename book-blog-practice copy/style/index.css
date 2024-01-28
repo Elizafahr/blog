@@ -303,3 +303,9 @@ nav .btn{
    height: 200px;
    width: 230px;
 }
+
+.status{
+  font-size: 13px !important;
+  background-color: var(--ligth-blue) !important;
+}
+ 
