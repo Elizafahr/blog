@@ -12,7 +12,7 @@
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="admin.php">
                 <img src="media/images/logo-black.svg" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,12 +145,14 @@
                     . $rowComment['Text']
                     . '</p>'
 
-                    . '<div class="d-flex gap-2" > <div  class="btn btn-primary"> ' . $rowComment['status'] . ' </div>
+                    . '<div class="d-flex gap-2" > <div  class="btn btn-primary " style="color: white; height: max-content;  border: none; font-size: 13px !important; background-color: var(--ligth-blue) !important;"> ' . $rowComment['status'] . ' </div>
                    <a href="delete_comment.php?id=' . $rowComment['Comment_ID'] . '" class="btn btn-danger">Удалить</a>
                    <form method="POST" action="process_comment.php">
                    <input type="hidden" name="comment_id" value="' . $rowComment['Comment_ID'] . '">';
                 if ($rowComment['status'] == "processing") {
-                    echo '<a href="process_comment.php?id=' . $rowComment['Comment_ID'] . ' name="approve" class="btn btn-success ms-2">Подтвердить</a>';
+                    // echo '<a href="process_comment.php?id=' . $rowComment['Comment_ID'] . ' name="approve" class="btn btn-success ms-2">Подтвердить</a>';
+                    echo '
+                    <button type="submit" name="approve" class="btn btn-success ms-2">Подтвердить</button>';
                 }
                 echo '</form> </div>';
                  

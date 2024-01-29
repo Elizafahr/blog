@@ -89,7 +89,7 @@
                     if($user_row['Role_ID']==1){
                         header("Location: admin.php"); // Перенаправление на главную страницу или другую страницу с авторизированным доступом
                         exit();
-                    }else if($user_row['Role_ID']==1){
+                    }else if($user_row['Role_ID']==2){
                         header("Location: index.php"); // Перенаправление на главную страницу или другую страницу с авторизированным доступом
                         exit();
                     }
