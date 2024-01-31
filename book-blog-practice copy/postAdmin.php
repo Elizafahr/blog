@@ -148,9 +148,9 @@
                     . '<div class="d-flex gap-2" > <div  class="btn btn-primary"> ' . $rowComment['status'] . ' </div>
                    <a href="delete_comment.php?id=' . $rowComment['Comment_ID'] . '" class="btn btn-danger">Удалить</a>
                    <form method="POST" action="process_comment.php">
-                   <input type="hidden" name="comment_id" value="' . $rowComment['Comment_ID'] . '">';
+                   <input type="hidden"   value="' . $rowComment['Comment_ID'] . '">';
                 if ($rowComment['status'] == "processing") {
-                    echo '<a href="process_comment.php?id=' . $rowComment['Comment_ID'] . ' name="approve" class="btn btn-success ms-2">Подтвердить</a>';
+                    echo '<a href="process_comment.php?comm=' . $rowComment['Comment_ID'] . '" name="approve" class="btn btn-success ms-2">Подтвердить</a>';
                 }
                 echo '</form> </div>';
                  
